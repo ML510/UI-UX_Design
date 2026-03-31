@@ -1,0 +1,681 @@
+/* signin.component.css
+   ─────────────────────────────────────────────────────────
+   RecruitIQ — Sign In Page Styles
+   Uses Flowbite CSS as base + custom BEM-style classes
+   Fonts: DM Sans + Syne (add to index.html or styles.css)
+   ─────────────────────────────────────────────────────────
+
+   ADD TO index.html <head>:
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" />
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+   ADD TO index.html before </body>:
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+*/
+
+/* ── CSS Variables ─────────────────────────────────────── */
+:root {
+  --riq-blue:        #0062FF;
+  --riq-blue-light:  #3B82F6;
+  --riq-blue-pale:   #EFF6FF;
+  --riq-blue-muted:  #BFDBFE;
+  --riq-ink:         #0F172A;
+  --riq-ink-60:      #475569;
+  --riq-ink-40:      #94A3B8;
+  --riq-white:       #FFFFFF;
+  --riq-surface:     #F8FAFD;
+  --riq-surface-2:   #F1F5F9;
+  --riq-border:      rgba(148, 163, 184, 0.25);
+  --riq-shadow-sm:   0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
+  --riq-shadow-md:   0 4px 24px rgba(15,23,42,0.08), 0 1px 4px rgba(15,23,42,0.04);
+  --riq-shadow-lg:   0 20px 60px rgba(15,23,42,0.10), 0 4px 16px rgba(15,23,42,0.06);
+  --riq-radius:      14px;
+  --riq-radius-lg:   22px;
+  --riq-font-body:   'DM Sans', sans-serif;
+  --riq-font-head:   'Syne', sans-serif;
+  --riq-transition:  0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Root / Reset ──────────────────────────────────────── */
+.riq-root {
+  font-family: var(--riq-font-body);
+  color: #111827; /* hex for var(--riq-ink) / gray-900 */
+  background-color: var(--riq-surface);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Background mesh */
+.riq-root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 0% 0%, rgba(59,130,246,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 100% 100%, rgba(0,98,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Orbs / Decorations ────────────────────────────────── */
+.riq-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.riq-orb--1 {
+  width: 400px; height: 400px;
+  background: rgba(59, 130, 246, 0.08);
+  top: -100px; left: -100px;
+}
+.riq-orb--2 {
+  width: 300px; height: 300px;
+  background: rgba(0, 98, 255, 0.05);
+  bottom: 0; right: 0;
+}
+.riq-orb--3 {
+  width: 200px; height: 200px;
+  background: rgba(99, 102, 241, 0.06);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ── Navbar ────────────────────────────────────────────── */
+.riq-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+
+  background: rgba(255, 255, 255, 0.85); /* semi-transparent white */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border-bottom: 1px solid #e5e7eb; /* hex for light gray border (riq-border) */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* small shadow, replace var(--riq-shadow-sm) */
+}
+
+.riq-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 64px;
+}
+
+.riq-nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--riq-font-head);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #111827; /* hex for var(--riq-ink) / gray-900 */
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.riq-nav__logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+
+  background: linear-gradient(135deg, #2563eb, #60a5fa); /* riq-blue & riq-blue-light in hex */
+  color: #ffffff; /* white text/icon */
+  
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.riq-nav__links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .riq-nav__links { display: none; }
+}
+
+.riq-nav__link {
+  font-family: var(--riq-font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b7280; /* hex for ink-60 / gray-500 */
+  text-decoration: none;
+  transition: color var(--riq-transition);
+}
+.riq-nav__link:hover { color: #2563eb; } /* hex for var(--riq-blue) */
+
+.riq-nav__cta {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.riq-nav__signin {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280; /* hex for ink-60 / gray-500 */
+  text-decoration: none;
+  transition: color var(--riq-transition);
+}
+.riq-nav__signin:hover { color: #2563eb; } /* hex for var(--riq-blue) */
+
+@media (max-width: 768px) {
+  .riq-nav__signin { display: none; }
+}
+
+.riq-nav__hamburger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: #6b7280; /* hex for ink-60 / gray-500 */
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background var(--riq-transition);
+}
+.riq-nav__hamburger:hover { background: #f3f4f6; } /* hex for var(--riq-surface-2) */
+
+/* ── Buttons ───────────────────────────────────────────── */
+.riq-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--riq-font-body);
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all var(--riq-transition);
+  text-decoration: none;
+}
+
+.riq-btn--pill {
+  border-radius: 999px;
+}
+
+.riq-btn--primary-sm {
+  background: linear-gradient(135deg, #2563eb, #60a5fa); /* hex for riq-blue & riq-blue-light */
+  color: #ffffff; /* white */
+  padding: 8px 20px;
+  font-size: 0.875rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 98, 255, 0.25);
+}
+.riq-btn--primary-sm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 98, 255, 0.35);
+}
+
+.riq-btn--login {
+  width: 100%;
+  background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%); /* hex colors for riq-blue & riq-blue-light */
+  color: #ffffff; /* white */
+  padding: 14px 24px;
+  border-radius: 8px; /* example value for var(--riq-radius) */
+  font-size: 1rem;
+  font-weight: 600;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0, 98, 255, 0.3);
+  letter-spacing: -0.01em;
+}
+.riq-btn--login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 98, 255, 0.4);
+}
+.riq-btn--login:active { transform: translateY(0); }
+
+/* ── Main Layout ───────────────────────────────────────── */
+.riq-main {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  padding-top: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.riq-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  min-height: calc(100vh - 64px - 120px);
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .riq-layout {
+    grid-template-columns: 1fr;
+    padding: 2rem 1.5rem;
+    gap: 2rem;
+  }
+}
+
+/* ── Editorial Section ─────────────────────────────────── */
+.riq-editorial {
+  padding-right: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .riq-editorial { padding-right: 0; }
+}
+
+.riq-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+
+  padding: 6px 16px;
+  border-radius: 999px;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: #3b82f6; /* hex for var(--riq-blue) */
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.riq-badge:hover {
+  background: rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+}
+
+.riq-headline {
+  font-family: var(--riq-font-head);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: #111827; /* hex for var(--riq-ink) / gray-900 */
+  margin: 0;
+}
+
+.riq-headline--gradient {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.riq-subtext {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #6b7280; /* hex color */
+  max-width: 420px;
+  margin: 0;
+}
+
+/* Feature Pills */
+.riq-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.riq-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff; /* hex for var(--riq-white) */
+  border: 1px solid #e5e7eb; /* hex for var(--riq-border) */
+  color: #6b7280; /* hex for var(--riq-ink-60) / gray-500 */
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* hex / rgba replacement for var(--riq-shadow-sm) */
+}
+
+/* Visual Card */
+.riq-visual-card {
+  position: relative;
+  border-radius: 16px; /* example for var(--riq-radius-lg) */
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* replacement for var(--riq-shadow-md) */
+  border: 1px solid #e5e7eb; /* hex for var(--riq-border) / light gray */
+}
+
+.riq-visual-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s ease;
+}
+.riq-visual-card:hover .riq-visual-card__img {
+  transform: scale(1.03);
+}
+
+.riq-visual-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ffffff1a 0%, #ffffff00 60%); /* rgba → hex with alpha */
+  pointer-events: none;
+}
+
+.riq-live-badge {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: #ffffffe6; /* rgba(255,255,255,0.9) → hex with alpha */
+  backdrop-filter: blur(12px);
+  border: 1px solid #e5e7eb; /* var(--riq-border) → light gray */
+  color: #111827; /* var(--riq-ink) → dark gray / almost black */
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* var(--riq-shadow-sm) replacement */
+}
+
+.riq-live-dot {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ── Login Card ────────────────────────────────────────── */
+.riq-card-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.riq-card {
+  width: 100%;
+  max-width: 440px;
+  background: #ffffffe0; /* rgba(255, 255, 255, 0.88) → hex with alpha */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid #ffffffe6; /* rgba(255, 255, 255, 0.9) → hex with alpha */
+  border-radius: 28px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* replacement for var(--riq-shadow-lg) */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card corner glow */
+.riq-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.riq-card__header {
+  margin-bottom: 2rem;
+}
+
+.riq-card__title {
+  font-family: var(--riq-font-head);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #111827; /* dark gray / hex for var(--riq-ink) */
+  margin: 0 0 6px 0;
+}
+
+.riq-card__subtitle {
+  font-size: 0.9rem;
+  color: #9ca3af; /* hex for ink-40 / gray-400 */
+  margin: 0;
+}
+
+/* ── Form ──────────────────────────────────────────────── */
+.riq-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.riq-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.riq-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7280; /* hex for ink-60 / gray-500 */
+}
+
+.riq-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.riq-forgot {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2563eb; /* hex for var(--riq-blue) / primary blue */
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.riq-forgot:hover { text-decoration: underline; }
+
+.riq-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.riq-input-icon {
+  position: absolute;
+  left: 14px;
+  color: #9ca3af; /* hex for var(--riq-ink-40) / gray-400 */
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.riq-input {
+  width: 100%;
+  padding: 13px 16px 13px 42px;
+  font-family: var(--riq-font-body);
+  font-size: 0.9rem;
+  color: #111827; /* hex for var(--riq-ink) / gray-900 */
+  background: #f9fafb; /* hex for var(--riq-surface-2) / gray-50 */
+  border: 1.5px solid transparent;
+  border-radius: 8px; /* example for var(--riq-radius) */
+  outline: none;
+  transition: all 0.3s ease; /* example replacement for var(--riq-transition) */
+}
+
+.riq-input::placeholder { color: #9ca3af; /* hex for var(--riq-ink-40) / gray-400 */ }
+
+.riq-input:focus {
+  border-color: #60a5fa; /* hex for var(--riq-blue-light) / light blue */
+  background: #ffffff;    /* hex for var(--riq-white) */
+  box-shadow: 0 0 0 3px #3b82f61f; /* rgba(59,130,246,0.12) → hex with alpha */
+}
+
+.riq-input--pw {
+  padding-right: 44px;
+}
+
+.riq-pw-toggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af; /* hex for var(--riq-ink-40) / gray-400 */
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.3s ease; /* example replacement for var(--riq-transition) */
+}
+.riq-pw-toggle:hover { color: #2563eb; /* hex for var(--riq-blue) / primary blue */ }
+
+/* ── Divider ───────────────────────────────────────────── */
+.riq-divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 1.75rem 0;
+}
+
+.riq-divider::before,
+.riq-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb; /* hex for var(--riq-border) / light gray */
+}
+
+.riq-divider__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9ca3af; /* hex for var(--riq-ink-40) / gray-400 */
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0 14px;
+  background: transparent;
+}
+
+/* ── Social Buttons ────────────────────────────────────── */
+.riq-social {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.riq-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  font-family: var(--riq-font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827; /* hex for var(--riq-ink) / gray-900 */
+  background: #ffffff; /* hex for var(--riq-white) */
+  border: 1.5px solid #e5e7eb; /* hex for var(--riq-border) / gray-200 */
+  border-radius: 8px; /* example replacement for var(--riq-radius) */
+  cursor: pointer;
+  transition: all 0.3s ease; /* example replacement for var(--riq-transition) */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* replacement for var(--riq-shadow-sm) */
+}
+.riq-social-btn:hover {
+  border-color: #3b82f6; /* hex for var(--riq-blue-muted) */
+  background: #bfdbfe;   /* hex for var(--riq-blue-pale) */
+  color: #2563eb;        /* hex for var(--riq-blue) */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* replacement for var(--riq-shadow-md) */
+}
+
+/* ── Register link ─────────────────────────────────────── */
+.riq-register {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280; /* hex for var(--riq-ink-60) / gray-500 */
+}
+
+.riq-register__link {
+  color: #2563eb; /* hex for var(--riq-blue) / primary blue */
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 4px;
+}
+.riq-register__link:hover { text-decoration: underline; }
+
+/* ── Footer ────────────────────────────────────────────── */
+.riq-footer {
+  background: #ffffff;       /* hex for var(--riq-white) */
+  border-top: 1px solid #e5e7eb; /* hex for var(--riq-border) / light gray */
+  position: relative;
+  z-index: 1;
+}
+
+.riq-footer__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.riq-footer__brand {
+  font-family: var(--riq-font-head);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #111827; /* hex for var(--riq-ink) / gray-900 */
+  margin-bottom: 4px;
+}
+
+.riq-footer__copy {
+  font-size: 0.8rem;
+  color: #9ca3af; /* hex for var(--riq-ink-40) / gray-400 */
+  margin: 0;
+}
+
+.riq-footer__links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.riq-footer__links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #6b7280; /* hex for var(--riq-ink-60) / gray-500 */
+  text-decoration: none;
+  transition: color 0.3s ease; /* example replacement for var(--riq-transition) */
+}
+.riq-footer__links a:hover { color: #2563eb; /* hex for var(--riq-blue) / primary blue */ }
+
