@@ -1,1 +1,168 @@
-<p>dashboard works!</p>
+<link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+
+<!-- SideNavBar -->
+<aside
+    class="h-full w-72 flex-shrink-0 border-r border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(44,47,49,0.06)] flex flex-col py-8 px-6 font-headline font-medium tracking-tight z-50">
+
+    <div class="mb-10 flex items-center gap-3">
+        <div class="w-10 h-10 ai-glow rounded-xl flex items-center justify-center shadow-lg">
+            
+        </div>
+        <div>
+            <h1 class="text-2xl font-bold tracking-tighter text-slate-900 dark:text-white">Lumina AI</h1>
+            <p class="text-xs text-on-surface-variant opacity-70">Recruitment Suite</p>
+        </div>
+    </div>
+
+    <nav class="flex-grow space-y-1 overflow-y-auto">
+        <a class="flex items-center gap-3 px-4 py-3 text-sky-600 dark:text-sky-400 font-bold border-r-2 border-sky-500 hover:bg-sky-50/50 dark:hover:bg-sky-900/20 transition-all duration-300"
+            href="#">
+           <span class="material-symbols-outlined" data-icon="dashboard" style="">dashboard</span>
+            <span>Admin Dashboard</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="group" style="">group</span>
+            <span>User Management</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="business_center" style="">business_center</span>
+            <span>HR Dashboard</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="record_voice_over" style="">record_voice_over</span>
+            <span>Interviewer Dashboard</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="note_add" style="">note_add</span>
+            <span>Add Vacancy & CV</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="calendar_today" style="">calendar_today</span>
+            <span>Interview Schedule</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="badge" style="">badge</span>
+            <span>Recruiters</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="person_search" style="">person_search</span>
+            <span>Candidate</span>
+        </a>
+    </nav>
+
+    <div class="mt-auto border-t border-white/10 pt-6">
+        <a class="flex items-center gap-3 px-4 py-3 text-[#f1592a] hover:text-[#d1441a] transition-colors" href="#">
+            <span class="material-symbols-outlined" data-icon="logout" style="">logout</span>
+            <span class="font-bold">Logout</span>
+        </a>
+        <div class="mt-6 flex items-center gap-3 px-2">
+            <img alt="User profile picture" class="w-10 h-10 rounded-full object-cover ghost-border"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWLNrbh9DqUhm7MPx-ZoqEj2j5Xp8AymL3pXj8OOfz07bNy0lDna-6tW0gdAMvDjfmwN7fPXl-72qSnCkHAZk8PcsnLfy4tZ6RkywAp442vqUzmtE-8mdJhJW5eOmo4XcNdBs4q5K-hlGuuOp1oO3E57XDEM1uS6pWm4jX_UOT7pp-m8imX85nZfQgWS0XCBL79htQ5gh4oLBAiJ849o9J0bzy3Gi9ZvNlBBWtIKucSBXS-FyAxNSCZ1UXBBdte9OZjZGFy4dszCo" />
+            <div class="overflow-hidden">
+                <p class="text-sm font-bold truncate">Alex Sterling</p>
+                <p class="text-xs opacity-60 truncate">Chief Recruiter</p>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- Right Side Container -->
+<div class="flex-grow flex flex-col min-w-0 h-screen relative">
+    <!-- TopAppBar -->
+    <!-- <header
+        class="h-20 flex-shrink-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl flex items-center justify-between px-12 z-40 font-headline border-b border-white/10">
+        <div class="flex items-center gap-4 flex-grow max-w-xl">
+            <div class="relative w-full">
+                <span
+                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant opacity-50">search</span>
+                <input
+                    class="w-full bg-surface-container-low border-none rounded-full py-2.5 pl-12 pr-4 focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+                    placeholder="Search candidates, vacancies, or schedules..." type="text" />
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <button class="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+            </button>
+            <button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">settings</span>
+            </button>
+            <div class="h-8 w-px bg-on-surface-variant/10 mx-2"></div>
+            <div class="flex items-center gap-3">
+                <span class="text-sm font-medium">Lumina AI Alpha</span>
+                <span
+                    class="px-2 py-0.5 rounded text-[10px] ai-glow text-white font-bold uppercase tracking-widest">Enterprise</span>
+            </div>
+        </div>
+    </header> -->
+
+    <!-- Scrollable Content Area -->
+    <!-- <main class="flex-grow overflow-y-auto bg-surface relative" id="main-content">
+        <div class="h-full w-full flex items-center justify-center text-on-surface-variant/20 p-12">
+            <div class="text-center">
+                <span class="material-symbols-outlined text-6xl mb-4 block"
+                    style="font-variation-settings: 'FILL' 0, 'wght' 200;">space_dashboard</span>
+                <p class="font-headline text-xl font-medium">Dashboard View Ready</p>
+                <p class="text-sm">Select a section from the sidebar to begin</p>
+            </div>
+        </div>
+    </main> -->
+
+    <!-- Fixed Footer Section -->
+    <footer
+        class="h-64 flex-shrink-0 bg-white border-t border-on-surface/5 px-12 pt-12 pb-8 font-body z-40 overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-8">
+            <div class="col-span-1 md:col-span-2">
+                <h2 class="text-2xl font-headline font-bold text-primary mb-4">RecruitIQ</h2>
+                <p class="text-sm text-on-surface-variant max-w-sm leading-relaxed">The intelligent recruitment engine
+                    designed to streamline your hiring pipeline with precision and speed.</p>
+            </div>
+            <div>
+                <h5 class="text-[10px] font-bold uppercase tracking-widest text-on-surface mb-4">Resources</h5>
+                <ul class="space-y-2 text-xs text-on-surface-variant">
+                    <li><a class="hover:text-primary transition-colors" href="#">Documentation</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">API Reference</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">System Status</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="text-[10px] font-bold uppercase tracking-widest text-on-surface mb-4">Support</h5>
+                <ul class="space-y-2 text-xs text-on-surface-variant">
+                    <li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Contact Sales</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Privacy & Terms</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="pt-6 border-t border-on-surface/5 flex items-center justify-between">
+            <p class="text-[10px] text-on-surface-variant">© 2026 <span class="font-bold text-on-surface">RecruitIQ
+                    Inc.</span> Built for scale.</p>
+            <div class="flex items-center gap-4">
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="#">
+                    <!-- Github Icon SVG -->
+                </a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="#">
+                    <!-- LinkedIn Icon SVG -->
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contextual FAB -->
+    <button
+        class="fixed bottom-10 right-10 w-16 h-16 ai-glow text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+        <span class="material-symbols-outlined text-3xl" style='font-variation-settings: "FILL" 1;'>bolt</span>
+    </button>
+</div>
