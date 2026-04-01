@@ -9,61 +9,55 @@
     class="h-full w-72 flex-shrink-0 border-r border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(44,47,49,0.06)] flex flex-col py-8 px-6 font-headline font-medium tracking-tight z-50">
 
     <div class="mb-10 flex items-center gap-3">
-        <div class="w-10 h-10 ai-glow rounded-xl flex items-center justify-center shadow-lg">
-            
+        <div class="w-20 h-20 ai-glow rounded-xl flex items-center justify-center shadow-lg">
+            <img src="" alt="">
         </div>
         <div>
-            <h1 class="text-2xl font-bold tracking-tighter text-slate-900 dark:text-white">Lumina AI</h1>
+            <h1 style="color: #34b5fa;" class="dark:text-white text-2xl font-bold tracking-tighter">
+  RecruitIQ
+</h1>
             <p class="text-xs text-on-surface-variant opacity-70">Recruitment Suite</p>
         </div>
     </div>
 
     <nav class="flex-grow space-y-1 overflow-y-auto">
-        <a class="flex items-center gap-3 px-4 py-3 text-sky-600 dark:text-sky-400 font-bold border-r-2 border-sky-500 hover:bg-sky-50/50 dark:hover:bg-sky-900/20 transition-all duration-300"
-            href="#">
-           <span class="material-symbols-outlined" data-icon="dashboard" style="">dashboard</span>
+        <a [class.active]="selectedMenu === 'admin'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('admin', $event)">
+            <span class="material-symbols-outlined">dashboard</span>
             <span>Admin Dashboard</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
-            href="#">
-            <span class="material-symbols-outlined" data-icon="group" style="">group</span>
+        <a [class.active]="selectedMenu === 'users'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('users', $event)">
+            <span class="material-symbols-outlined">group</span>
             <span>User Management</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
-            href="#">
-            <span class="material-symbols-outlined" data-icon="business_center" style="">business_center</span>
+        <a [class.active]="selectedMenu === 'hr'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('hr', $event)">
+            <span class="material-symbols-outlined">business_center</span>
             <span>HR Dashboard</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
-            href="#">
-            <span class="material-symbols-outlined" data-icon="record_voice_over" style="">record_voice_over</span>
+        <a [class.active]="selectedMenu === 'interviewer'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('interviewer', $event)">
+            <span class="material-symbols-outlined">record_voice_over</span>
             <span>Interviewer Dashboard</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
-            href="#">
-            <span class="material-symbols-outlined" data-icon="note_add" style="">note_add</span>
+        <a [class.active]="selectedMenu === 'vacancy'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('vacancy', $event)">
+            <span class="material-symbols-outlined">note_add</span>
             <span>Add Vacancy & CV</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
-            href="#">
-            <span class="material-symbols-outlined" data-icon="calendar_today" style="">calendar_today</span>
+        <a [class.active]="selectedMenu === 'schedule'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('schedule', $event)">
+            <span class="material-symbols-outlined">calendar_today</span>
             <span>Interview Schedule</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
-            href="#">
-            <span class="material-symbols-outlined" data-icon="badge" style="">badge</span>
+        <a [class.active]="selectedMenu === 'recruiters'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('recruiters', $event)">
+            <span class="material-symbols-outlined">badge</span>
             <span>Recruiters</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors hover:bg-sky-50/50 dark:hover:bg-sky-900/20"
-            href="#">
-            <span class="material-symbols-outlined" data-icon="person_search" style="">person_search</span>
+        <a [class.active]="selectedMenu === 'candidate'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('candidate', $event)">
+            <span class="material-symbols-outlined">person_search</span>
             <span>Candidate</span>
         </a>
     </nav>
 
     <div class="mt-auto border-t border-white/10 pt-6">
         <a class="flex items-center gap-3 px-4 py-3 text-[#f1592a] hover:text-[#d1441a] transition-colors" href="#">
-            <span class="material-symbols-outlined" data-icon="logout" style="">logout</span>
+            <span class="material-symbols-outlined" data-icon="logout">logout</span>
             <span class="font-bold">Logout</span>
         </a>
         <div class="mt-6 flex items-center gap-3 px-2">
