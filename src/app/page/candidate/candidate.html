@@ -1,0 +1,291 @@
+<!-- candidate-dashboard.component.html -->
+<!--
+  Fixed: Candidate template uses CommonModule and FormsModule in component imports.
+  SETUP — index.html <head>:
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:opsz,wght@9..40,300;400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;600;700;800&display=swap" rel="stylesheet">
+
+
+  index.html before </body>:
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+
+  app.module.ts imports: FormsModule, RouterModule
+-->
+
+
+<div class="cnd-page">
+
+
+    <!-- ══════════════════════════════════════
+       PAGE HEADER
+  ════════════════════════════════════════ -->
+    <section class="cnd-hero">
+        <div class="cnd-hero__text">
+            <h2 class="cnd-hero__title">Candidate Dashboard</h2>
+            <p class="cnd-hero__sub">
+                You have
+                <span class="cnd-hero__highlight">{{ stats.totalCandidates | number }}</span>
+                active candidates across
+                <span class="cnd-hero__highlight">{{ stats.openPositions }}</span>
+                open positions.
+            </p>
+        </div>
+        <button class="cnd-btn cnd-btn--primary" (click)="onSourceTalent()">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            Source New Talent
+        </button>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+       CONTROLS ROW
+  ════════════════════════════════════════ -->
+    <section class="cnd-controls">
+
+
+        <!-- Filters Panel -->
+        <div class="cnd-filters-panel">
+
+
+            <!-- Filter: Job Role -->
+            <div class="cnd-filter-group">
+                <label class="cnd-filter-label">Filter by Job Role</label>
+                <select class="cnd-select" [(ngModel)]="filters.role" (change)="onFilterChange()">
+                    <option value="">All Roles</option>
+                    <option value="Software Engineer">Software Engineer</option>
+                    <option value="Product Designer">Product Designer</option>
+                    <option value="Product Manager">Product Manager</option>
+                    <option value="Data Scientist">Data Scientist</option>
+                    <option value="Fullstack Engineer">Fullstack Engineer</option>
+                    <option value="UI Engineer">UI Engineer</option>
+                </select>
+            </div>
+
+
+            <!-- Filter: Status -->
+            <div class="cnd-filter-group">
+                <label class="cnd-filter-label">Filter by Status</label>
+                <select class="cnd-select" [(ngModel)]="filters.status" (change)="onFilterChange()">
+                    <option value="">All Statuses</option>
+                    <option value="Interviewed">Interviewed</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Sourced">Sourced</option>
+                </select>
+            </div>
+
+
+            <!-- Sort -->
+            <div class="cnd-filter-group">
+                <label class="cnd-filter-label">Sort by Score</label>
+                <select class="cnd-select" [(ngModel)]="filters.sort" (change)="onFilterChange()">
+                    <option value="highest">Highest Score First</option>
+                    <option value="lowest">Lowest Score First</option>
+                    <option value="recent">Recently Updated</option>
+                </select>
+            </div>
+
+
+        </div>
+
+
+        <!-- AI Accuracy Widget -->
+        <div class="cnd-ai-stat">
+            <p class="cnd-ai-stat__label">Global AI Accuracy</p>
+            <div class="cnd-ai-stat__value-row">
+                <span class="cnd-ai-stat__value">{{ stats.aiAccuracy }}%</span>
+                <span class="cnd-ai-stat__delta">+1.2%</span>
+            </div>
+        </div>
+
+
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+       CANDIDATE TABLE
+  ════════════════════════════════════════ -->
+    <div class="cnd-table-wrap">
+
+
+        <!-- Loading state -->
+        <div class="cnd-loading" *ngIf="isLoading">
+            <div class="cnd-loading__spinner"></div>
+            <span>Loading candidates...</span>
+        </div>
+
+
+        <table class="cnd-table" *ngIf="!isLoading">
+            <thead class="cnd-table__head">
+                <tr>
+                    <th class="cnd-th cnd-th--name">Candidate Name</th>
+                    <th class="cnd-th">Job Role</th>
+                    <th class="cnd-th cnd-th--center">Exp.</th>
+                    <th class="cnd-th">AI Score</th>
+                    <th class="cnd-th cnd-th--center">Human</th>
+                    <th class="cnd-th">Status</th>
+                    <th class="cnd-th">Email</th>
+                    <th class="cnd-th cnd-th--right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="cnd-table__body">
+                <tr class="cnd-row" *ngFor="let c of pagedCandidates; let i = index" (click)="onViewCandidate(c)">
+                    <!-- Name + Avatar -->
+                    <td class="cnd-td cnd-td--name">
+                        <div class="cnd-candidate-identity">
+                            <img [src]="c.avatar" [alt]="c.name" class="cnd-avatar" />
+                            <div>
+                                <p class="cnd-name">{{ c.name }}</p>
+                                <p class="cnd-location">{{ c.location }}</p>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <!-- Role -->
+                    <td class="cnd-td cnd-td--role">{{ c.role }}</td>
+
+
+                    <!-- Experience -->
+                    <td class="cnd-td cnd-td--center">{{ c.experience }} Yrs</td>
+
+
+                    <!-- AI Score Bar -->
+                    <td class="cnd-td">
+                        <div class="cnd-score-bar">
+                            <div class="cnd-score-bar__track">
+                                <div class="cnd-score-bar__fill" [style.width.%]="c.aiScore"
+                                    [ngClass]="getScoreClass(c.aiScore)"></div>
+                            </div>
+                            <span class="cnd-score-bar__label" [ngClass]="getScoreClass(c.aiScore)">{{ c.aiScore
+                                }}%</span>
+                        </div>
+                    </td>
+
+
+                    <!-- Human Score -->
+                    <td class="cnd-td cnd-td--center cnd-td--human">{{ c.humanScore }}%</td>
+
+
+                    <!-- Status Badge -->
+                    <td class="cnd-td">
+                        <span class="cnd-badge" [ngClass]="{
+                'cnd-badge--interviewed': c.status === 'Interviewed',
+                'cnd-badge--pending':    c.status === 'Pending',
+                'cnd-badge--rejected':   c.status === 'Rejected',
+                'cnd-badge--sourced':    c.status === 'Sourced'
+              }">{{ c.status }}</span>
+                    </td>
+
+
+                    <!-- Email -->
+                    <td class="cnd-td cnd-td--email">{{ c.email }}</td>
+
+
+                    <!-- Action -->
+                    <td class="cnd-td cnd-td--right" (click)="$event.stopPropagation()">
+                        <div class="cnd-actions">
+                            <button class="cnd-action-btn cnd-action-btn--view" (click)="onViewCandidate(c)"
+                                title="View profile">
+                                <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </button>
+                            <button class="cnd-action-btn cnd-action-btn--more" (click)="onMoreOptions(c)"
+                                title="More options">
+                                <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+
+                <!-- Empty state -->
+                <tr *ngIf="pagedCandidates.length === 0">
+                    <td colspan="8" class="cnd-empty">
+                        <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="1">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <p>No candidates found matching your filters.</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <!-- ── Pagination ── -->
+        <div class="cnd-pagination">
+            <p class="cnd-pagination__info">
+                Showing
+                <strong>{{ paginationStart }}–{{ paginationEnd }}</strong>
+                of
+                <strong>{{ filteredCandidates.length | number }}</strong>
+                candidates
+            </p>
+
+
+            <div class="cnd-pagination__controls">
+                <button class="cnd-page-btn" [class.cnd-page-btn--disabled]="currentPage === 1"
+                    (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1" aria-label="Previous page">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+
+                <ng-container *ngFor="let p of visiblePages">
+                    <span *ngIf="p === '...'" class="cnd-page-ellipsis">...</span>
+                    <button *ngIf="p !== '...'" class="cnd-page-btn" [class.cnd-page-btn--active]="p === currentPage"
+                        (click)="goToPage(+p)">{{ p }}</button>
+                </ng-container>
+
+
+                <button class="cnd-page-btn" [class.cnd-page-btn--disabled]="currentPage === totalPages"
+                    (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages" aria-label="Next page">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+
+    </div><!-- /cnd-table-wrap -->
+
+
+    <!-- Bottom spacer for footer -->
+    <div style="height: 2rem;"></div>
+
+
+</div><!-- /cnd-page -->
+
+
+
+
+<!-- ══════════════════════════════════════
+     AI ASSISTANT ORB (Fixed, outside page div)
+════════════════════════════════════════ -->
+<div class="cnd-ai-orb" (click)="onOpenAssistant()" title="AI Assistant Active">
+    <div class="cnd-ai-orb__ring cnd-ai-orb__ring--1" aria-hidden="true"></div>
+    <div class="cnd-ai-orb__ring cnd-ai-orb__ring--2" aria-hidden="true"></div>
+    <div class="cnd-ai-orb__core">
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+        </svg>
+    </div>
+    <div class="cnd-ai-orb__tooltip">AI Assistant Active</div>
+</div>
