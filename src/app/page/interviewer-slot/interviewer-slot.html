@@ -1,0 +1,335 @@
+<!-- interview-schedule.component.html -->
+<!--
+  SETUP — index.html <head>:
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:opsz,wght@9..40,300;400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;600;700;800&display=swap" rel="stylesheet">
+
+  index.html before </body>:
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+  app.module.ts imports: FormsModule, RouterModule, ReactiveFormsModule
+-->
+
+<div class="is-page">
+
+  <!-- ══════════════════════════════════════
+       PAGE HEADER
+  ════════════════════════════════════════ -->
+  <header class="is-hero">
+    <div>
+      <h1 class="is-hero__title">Interview Schedule</h1>
+      <p class="is-hero__sub">Manage and coordinate candidate evaluations with ease.</p>
+    </div>
+    <!-- Summary Chips -->
+    <div class="is-summary-chips">
+      <div class="is-chip is-chip--blue">
+        <span class="is-chip__dot"></span>
+        <span>{{ countByStatus('Scheduled') }} Scheduled</span>
+      </div>
+      <div class="is-chip is-chip--green">
+        <span class="is-chip__dot"></span>
+        <span>{{ countByStatus('Completed') }} Completed</span>
+      </div>
+      <div class="is-chip is-chip--amber">
+        <span class="is-chip__dot"></span>
+        <span>{{ countByStatus('Pending') }} Pending</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       BENTO GRID
+  ════════════════════════════════════════ -->
+  <div class="is-bento">
+
+    <!-- ─── LEFT: Add / Edit Slot Form ─── -->
+    <section class="is-form-col">
+      <div class="is-card is-card--glass">
+
+        <div class="is-card__head">
+          <div class="is-card__head-icon">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 4v16m8-8H4"/>
+            </svg>
+          </div>
+          <h2 class="is-card__title">
+            {{ editingSlot ? 'Edit Interview Slot' : 'Add Interview Slot' }}
+          </h2>
+        </div>
+
+        <!-- <form class="is-form" (ngSubmit)="onSubmitSlot()" #slotForm="ngForm" novalidate> -->
+            <form class="is-form" (ngSubmit)="onSubmitSlot()" #slotForm="" novalidate>
+
+          <!-- Date -->
+          <div class="is-field">
+            <label class="is-label">Date</label>
+            <input
+              class="is-input"
+              type="date"
+              
+              name="date"
+              required
+            />
+          </div>
+
+          <!-- Time row -->
+          <div class="is-field-row">
+            <div class="is-field">
+              <label class="is-label">Start Time</label>
+              <input
+                class="is-input"
+                type="time"
+                
+                name="startTime"
+                required
+              />
+            </div>
+            <div class="is-field">
+              <label class="is-label">End Time</label>
+              <input
+                class="is-input"
+                type="time"
+                
+                name="endTime"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Interviewer -->
+          <div class="is-field">
+            <label class="is-label">Interviewer</label>
+            <div class="is-select-wrap">
+              <select
+                class="is-select"
+               
+                name="interviewerId"
+                required
+              >
+                <option value="">Select Interviewer</option>
+                <option *ngFor="let iv of interviewers" [value]="iv.id">
+                  {{ iv.id }} – {{ iv.name }}
+                </option>
+              </select>
+              <svg class="is-select-icon" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Status (edit only) -->
+          <div class="is-field" *ngIf="editingSlot">
+            <label class="is-label">Status</label>
+            <div class="is-select-wrap">
+              <select class="is-select"  name="status">
+                <option value="Scheduled">Scheduled</option>
+                <option value="Completed">Completed</option>
+                <option value="Pending">Pending</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <svg class="is-select-icon" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="is-form__actions">
+            <button
+              *ngIf="editingSlot"
+              type="button"
+              class="is-btn is-btn--ghost"
+              (click)="onCancelEdit()"
+            >Cancel</button>
+            <button type="submit" class="is-btn is-btn--primary is-btn--full">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+              {{ editingSlot ? 'Save Changes' : 'Add Slot' }}
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+    <!-- ─── RIGHT: Scheduled Slots Table ─── -->
+    <section class="is-table-col">
+      <div class="is-card is-card--solid">
+
+        <!-- Card Head -->
+        <div class="is-table-head">
+          <h2 class="is-card__title">Scheduled Slots</h2>
+          <div class="is-table-head__actions">
+            <!-- Filter -->
+            <div class="is-select-wrap">
+              <select class="is-select is-select--sm"  (change)="onFilterChange()">
+                <option value="">All Statuses</option>
+                <option value="Scheduled">Scheduled</option>
+                <option value="Completed">Completed</option>
+                <option value="Pending">Pending</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <svg class="is-select-icon" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+            <button class="is-icon-btn" title="More options" (click)="onTableMore()">
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="is-table-scroll">
+          <table class="is-table">
+            <thead class="is-thead">
+              <tr>
+                <th class="is-th">Date</th>
+                <th class="is-th">Start Time</th>
+                <th class="is-th">End Time</th>
+                <th class="is-th">Interviewer</th>
+                <th class="is-th">Status</th>
+                <th class="is-th is-th--right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Loading -->
+              <tr *ngIf="isLoading">
+                <td colspan="6" class="is-loading-cell">
+                  <div class="is-spinner"></div>
+                  <span>Loading schedule...</span>
+                </td>
+              </tr>
+
+              <!-- Rows -->
+              <tr
+                class="is-row"
+                *ngFor="let slot of pagedSlots"
+              >
+                <td class="is-td is-td--date">{{ formatDate(slot.date) }}</td>
+                <td class="is-td">{{ slot.startTime }}</td>
+                <td class="is-td">{{ slot.endTime }}</td>
+                <td class="is-td is-td--interviewer">{{ slot.interviewerName }}</td>
+                <td class="is-td">
+                  <!-- <span
+                    class="is-status-badge"
+                    [ngClass]="{
+                      'is-status-badge--scheduled':  slot.status === 'Scheduled',
+                      'is-status-badge--completed':  slot.status === 'Completed',
+                      'is-status-badge--pending':    slot.status === 'Pending',
+                      'is-status-badge--cancelled':  slot.status === 'Cancelled'
+                    }"
+                  >
+                    <span class="is-status-badge__dot"></span>
+                    {{ slot.status }}
+                  </span> -->
+                </td>
+                <td class="is-td is-td--right">
+                  <div class="is-row-actions">
+                    <button class="is-action-btn is-action-btn--edit" (click)="onEditSlot(slot)" title="Edit">
+                      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                      </svg>
+                    </button>
+                    <button class="is-action-btn is-action-btn--delete" (click)="onDeleteSlot(slot)" title="Delete">
+                      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Empty state -->
+              <tr *ngIf="!isLoading && pagedSlots.length === 0">
+                <td colspan="6" class="is-empty-cell">
+                  <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  <p>No slots found. Add one using the form.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="is-pagination">
+          <p class="is-pagination__info">
+            Showing <strong>{{ paginationStart }} to {{ paginationEnd }}</strong>
+            of <strong>{{ filteredSlots.length }}</strong> entries
+          </p>
+          <div class="is-pagination__controls">
+            <button
+              class="is-page-btn"
+              [class.is-page-btn--disabled]="currentPage === 1"
+              (click)="goToPage(currentPage - 1)"
+              [disabled]="currentPage === 1"
+            >
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+
+            <ng-container *ngFor="let p of visiblePages">
+              <span *ngIf="p === '...'" class="is-page-ellipsis">...</span>
+              <button
+                *ngIf="p !== '...'"
+                class="is-page-btn"
+                [class.is-page-btn--active]="p === currentPage"
+                (click)="goToPage(+p)"
+              >{{ p }}</button>
+            </ng-container>
+
+            <button
+              class="is-page-btn"
+              [class.is-page-btn--disabled]="currentPage === totalPages"
+              (click)="goToPage(currentPage + 1)"
+              [disabled]="currentPage === totalPages"
+            >
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- /is-bento -->
+
+</div><!-- /is-page -->
+
+
+<!-- ══════════════════════════════════════
+     DELETE CONFIRM MODAL
+════════════════════════════════════════ -->
+<div class="is-modal-overlay" *ngIf="showDeleteConfirm" (click)="showDeleteConfirm = false">
+  <div class="is-modal" (click)="$event.stopPropagation()">
+    <div class="is-modal__icon is-modal__icon--danger">
+      <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+      </svg>
+    </div>
+    <h3 class="is-modal__title">Delete Slot?</h3>
+    <p class="is-modal__body">
+      This will permanently remove the interview slot scheduled for
+      <strong>{{ slotToDelete ? formatDate(slotToDelete.date) : '' }}</strong>
+      at <strong>{{ slotToDelete?.startTime }}</strong>.
+    </p>
+    <div class="is-modal__foot">
+      <button class="is-btn is-btn--ghost" (click)="showDeleteConfirm = false">Cancel</button>
+      <button class="is-btn is-btn--danger" (click)="confirmDelete()">Delete Slot</button>
+    </div>
+  </div>
+</div>
