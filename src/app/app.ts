@@ -6,10 +6,11 @@ import { Dashboard } from "./page/dashboard/dashboard";
 import { Candidate } from "./page/candidate/candidate";
 import { UserMenegement } from "./page/user-menegement/user-menegement";
 import { InterviewerSlot } from "./page/interviewer-slot/interviewer-slot";
+import { HrDashboard } from "./page/hr-dashboard/hr-dashboard";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Login, Dashboard, Candidate, UserMenegement, InterviewerSlot],
+  imports: [RouterOutlet, Login, Dashboard, Candidate, UserMenegement, InterviewerSlot, HrDashboard],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
