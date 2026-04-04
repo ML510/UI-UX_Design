@@ -14,42 +14,50 @@
         </div>
         <div>
             <h1 style="color: #34b5fa;" class="dark:text-white text-2xl font-bold tracking-tighter">
-  RecruitIQ
-</h1>
+                RecruitIQ
+            </h1>
             <p class="text-xs text-on-surface-variant opacity-70">Recruitment Suite</p>
         </div>
     </div>
 
     <nav class="flex-grow space-y-1 overflow-y-auto">
-        <a [class.active]="selectedMenu === 'admin'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('admin', $event)">
+        <a [class.active]="selectedMenu === 'admin'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#"
+            (click)="setActive('admin', $event)">
             <span class="material-symbols-outlined">dashboard</span>
             <span>Admin Dashboard</span>
         </a>
-        <a [class.active]="selectedMenu === 'users'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('users', $event)">
+        <a [class.active]="selectedMenu === 'users'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#"
+            (click)="setActive('users', $event)">
             <span class="material-symbols-outlined">group</span>
             <span>User Management</span>
         </a>
-        <a [class.active]="selectedMenu === 'hr'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('hr', $event)">
+        <a [class.active]="selectedMenu === 'hr'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#"
+            (click)="setActive('hr', $event)">
             <span class="material-symbols-outlined">business_center</span>
             <span>HR Dashboard</span>
         </a>
-        <a [class.active]="selectedMenu === 'interviewer'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('interviewer', $event)">
+        <a [class.active]="selectedMenu === 'interviewer'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#"
+            (click)="setActive('interviewer', $event)">
             <span class="material-symbols-outlined">record_voice_over</span>
             <span>Interviewer Dashboard</span>
         </a>
-        <a [class.active]="selectedMenu === 'vacancy'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('vacancy', $event)">
+        <a [class.active]="selectedMenu === 'vacancy'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#"
+            (click)="setActive('vacancy', $event)">
             <span class="material-symbols-outlined">note_add</span>
             <span>Add Vacancy & CV</span>
         </a>
-        <a [class.active]="selectedMenu === 'schedule'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('schedule', $event)">
+        <a [class.active]="selectedMenu === 'schedule'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#"
+            (click)="setActive('schedule', $event)">
             <span class="material-symbols-outlined">calendar_today</span>
             <span>Interview Schedule</span>
         </a>
-        <a [class.active]="selectedMenu === 'recruiters'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('recruiters', $event)">
+        <a [class.active]="selectedMenu === 'recruiters'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#"
+            (click)="setActive('recruiters', $event)">
             <span class="material-symbols-outlined">badge</span>
             <span>Recruiters</span>
         </a>
-        <a [class.active]="selectedMenu === 'candidate'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#" (click)="setActive('candidate', $event)">
+        <a [class.active]="selectedMenu === 'candidate'" class="flex items-center gap-3 px-4 py-3 nav-item" href="#"
+            (click)="setActive('candidate', $event)">
             <span class="material-symbols-outlined">person_search</span>
             <span>Candidate</span>
         </a>
